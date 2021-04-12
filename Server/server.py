@@ -7,10 +7,9 @@ FORMAT = "utf-8"  # Formato para codificar y descodificar el file
 SIZE = 1024  # Tamaño del archivo
 
 
-def main():
+def Server():
     print("[EMPEZANDO] El servidor esta iniciando")
-    server = socket.socket(
-        socket.AF_INET, socket.SOCK_STREAM)  # Se crea el socket
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # Se crea el socket
     server.bind(ADDR)  # Se establece la conexion
     server.listen()  # Hacemos que el server este escuchando alguna peticion
     print("[ESCUCHANDO] El servidor esta en la escucha")
