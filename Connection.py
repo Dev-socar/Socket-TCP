@@ -8,21 +8,24 @@ class StablishConnection():
         self.FORMAT = "utf-8"
         self.SIZE = 1024
         self.client = None
-        self.protocol = ""
+        self.protocol = 0
+        self.proto = protocol
+        self.ADDR = (bytearray(),port)
+        
 
 
     def get_client(self):
         if self.proto == "tcp":
-            self.protocol = socket.SOCK.STREAM 
+            self.protocol = socket.SOCK_STREAM 
         else: 
-            self.protocol = socket.DGRAM
+            self.protocol = socket.SOCK_DGRAM
 
         try:
             self.client = socket.socket(socker.AF_INET, self.protocol)
         except socket.error as error: 
             print(f'Couldnt get connection due: {error}')
 
-        ADDR= (self.IP, self.PORT)
+        self.ADDR= (self.IP, self.PORT)
         self.client.connect(self.ADDR)
     
     
@@ -55,9 +58,14 @@ class StablishConnection():
 
     def create_server_connection(self): 
 
+        #TODO: make the service background
+        if self.proto == "tcp":
+            self.protocol = socket.SOCK_STREAM 
+        else: 
+            self.protocol = socket.SOCK_DGRAM
         print("[EMPEZANDO] El servidor esta iniciando")
         server = socket.socket(socket.AF_INET, self.protocol)  # Se crea el servidor
-        server.bind(ADDR)  # Se establece la conexion
+        server.bind(self.ADDR)  # Se establece la conexion
         server.listen()  # Hacemos que el server este escuchando alguna peticion
         print("[ESCUCHANDO] El servidor esta en la escucha")
 
