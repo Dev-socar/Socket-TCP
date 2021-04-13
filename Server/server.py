@@ -7,7 +7,7 @@ FORMAT = "utf-8"  # Formato para codificar y descodificar el file
 SIZE = 1024  # Tamaño del archivo
 
 
-def Server():
+def TPC_Server():
     print("[EMPEZANDO] El servidor esta iniciando")
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # Se crea el socket
     server.bind(ADDR)  # Se establece la conexion
@@ -35,5 +35,3 @@ def Server():
         
 
 
-if __name__ == "__main__":
-    main()

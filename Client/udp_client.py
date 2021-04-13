@@ -1,4 +1,7 @@
 import socket
+import sys, os
+sys.path.append(os.path.abspath(os.path.join('..', 'Connection.py')))
+from Connection import StablishConnection
 
 IP = socket.gethostbyname(socket.gethostname())
 PORT = 8080
@@ -7,26 +10,15 @@ FORMAT = "utf-8"
 SIZE = 1024
 
 def UDPClient():
+    """
+        1. Crear cliente. 
+        2. Establecemos conexion con server
+        3. Enviamos paquete 
+        4. Cerramos file y cliente
     
-    client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    client.connect(ADDR)
+    """
+    cliente  = 
 
-    file = open("data/file.txt","r")
-    data = file.read()
-
-    client.send("file.txt".encode(FORMAT))
-    msg = client.recv(SIZE).decode(FORMAT)
-    print(f"[SERVER]: {msg}")
-
-    client.send(data.encode(FORMAT))
-    msg = client.recv(SIZE).decode(FORMAT)
-    print(f"[SERVER]: {msg}")
-
-    file.close()
-    client.close()
-
-if __name__ == "__main__":
-    main()
 
 
     
