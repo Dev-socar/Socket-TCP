@@ -1,4 +1,5 @@
 import socket
+import filetype
 class StablishConnection():
     
     def __init__(self, port, protocol):
@@ -27,8 +28,17 @@ class StablishConnection():
     
     def send_file(self, file_name):
         BASE_PATH = "Data/"
+        file_type = filetype.guess(f'{BASE_PATH}{file_name}')
+        file_action=''
+
+        #TODO: Agregar los file actions segun el tipo de archivo que se esta recibiendo
+        if file_type == 'image':
+            file_action = "r"
+        elif file_type == "video":
+            file_action= "rb"
+
         try:
-            file = open(f'{BASE_PATH}{file_name}', "r")
+            file = open(f'{BASE_PATH}{file_name}', f"{file_action}")
             data = file.read(ecs)
             self.client.send(f"{file_name}".encode(self.FORMAT)) 
             msg = self.client.receive(self.SIZE).decode(self.FORMAT)
@@ -44,6 +54,7 @@ class StablishConnection():
             print("Something wrong")
 
     def create_server_connection(self): 
+
         print("[EMPEZANDO] El servidor esta iniciando")
         server = socket.socket(socket.AF_INET, self.protocol)  # Se crea el servidor
         server.bind(ADDR)  # Se establece la conexion
@@ -56,7 +67,7 @@ class StablishConnection():
 
             filename = conn.recv(self.SIZE).decode(self.FORMAT)  # Se recibe el archivo (vacio)
             print("[RECV] Archivo recivido.")
-            file = open(filename, "w")  # Abrimos el archivo (vacio)
+            file = open(filename, 'r')  # Abrimos el archivo (vacio)
             conn.send("Archivo recivido.".encode(self.FORMAT))
 
             data = conn.recv(self.SIZE).decode(self.FORMAT)  # Se recibe la data (texto)
@@ -67,3 +78,4 @@ class StablishConnection():
             file.close()  # Cerramos el archivo
             conn.close()  # Cerramos la conexion con el cliente
             print(f"[DESCONECTADO] {addr} desconectado")
+
