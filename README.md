@@ -3,7 +3,7 @@ Aquí una breve explicación del funcionamiento del programa, cómo funciona int
 
 En la imagen que presentamos a continuación podemos observar las funciones que desencadena cada método del objeto Socket, así como las representaciones del intercambio de información por medio de los métodos de envío y escucha.
 
-(!diagrama.png)[img/diagrama.png]
+![diagrama.png](img/diagrama.png)
 
 Un servidor de escucha (listen) está en constante detección de los clientes que se quieran conectar a él. Cuando los clientes se conectan a él, el servidor llama a accept() para aceptar la conexión.
 
