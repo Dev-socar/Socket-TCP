@@ -1,0 +1,14 @@
+# idea files
+*.idea
+
+# mac files
+*.DS_store
+
+# folder venv and __pycache__ files
+venv/
+__pycache__/
+
+# vs files
+.vscode/
+*.json
+

@@ -21,7 +21,7 @@ class StablishConnection():
             self.protocol = socket.SOCK_DGRAM
 
         try:
-            self.client = socket.socket(socker.AF_INET, self.protocol)
+            self.client = socket.socket(socket.AF_INET, self.protocol)
         except socket.error as error: 
             print(f'Couldnt get connection due: {error}')
 
@@ -32,7 +32,7 @@ class StablishConnection():
     def send_file(self, file_name):
         BASE_PATH = "Data/"
         file_type = filetype.guess(f'{BASE_PATH}{file_name}')
-        file_action=''
+        file_action='r'
 
         #TODO: Agregar los file actions segun el tipo de archivo que se esta recibiendo
         if file_type == 'image':
@@ -41,14 +41,16 @@ class StablishConnection():
             file_action= "rb"
 
         try:
-            file = open(f'{BASE_PATH}{file_name}', f"{file_action}")
-            data = file.read(ecs)
+            file_send = open(f'{BASE_PATH}{file_name}', f"{file_action}")
+            data = file_send.read()
             self.client.send(f"{file_name}".encode(self.FORMAT)) 
             msg = self.client.receive(self.SIZE).decode(self.FORMAT)
             print(f'{SERVER} :{msg}')
             file.close()
-        except: 
-            print("Error")
+        except socket.error as err: 
+            print("Error", err)
+        except:
+            print("Error de archivo")
 
     def close_connection(self): 
         try: 
