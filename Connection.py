@@ -46,7 +46,7 @@ class StablishConnection():
             directory = f'{BASE_PATH}{file_name}'
             self.client.send(f"{directory}".encode(self.FORMAT)) 
             msg = self.client.recv(self.SIZE).decode(self.FORMAT)
-
+            self.client.send(data.encode(self.FORMAT))
             print(f'{msg}')
             file_send.close()
         except socket.error as err: 
@@ -78,7 +78,6 @@ class StablishConnection():
 
             filename = conn.recv(self.SIZE).decode(self.FORMAT)  # Se recibe el archivo (vacio)
             print("[RECV] Archivo recivido.")
-            file_old = open(filename, "r")
             filename = filename.split(".")
             filename[0] = filename[0]+"_recv."
             filename = filename[0]+filename[1]
@@ -87,11 +86,10 @@ class StablishConnection():
 
             data = conn.recv(self.SIZE).decode(self.FORMAT)  # Se recibe la data (texto)
             print(f"[RECV] Archivo de datos recibidos")
-            file_new.write(file_old.read())  # Se escribe la data en el el archivo
+            file_new.write(data)  # Se escribe la data en el el archivo
             conn.send("Archivo de datos recivido".encode(self.FORMAT))  # Se almacena
 
-            file_new.close()
-            file_old.close()  # Cerramos el archivo
+            file_new.close()  # Cerramos el archivo
             conn.close()  # Cerramos la conexion con el cliente
             print(f"[DESCONECTADO] {addr} desconectado")
 
