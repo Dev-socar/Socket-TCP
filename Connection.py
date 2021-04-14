@@ -12,8 +12,6 @@ class StablishConnection():
         self.proto = protocol
         self.ADDR = (bytearray(),port)
         
-
-
     def get_client(self):
         if self.proto == "tcp":
             self.protocol = socket.SOCK_STREAM 
@@ -35,11 +33,25 @@ class StablishConnection():
         file_action='r'
 
         #TODO: Agregar los file_new actions segun el tipo de archivo que se esta recibiendo
-        if file_type == 'image':
-            file_action = "r"
-        elif file_type == "video":
-            file_action= "rb"
+        if file_type == "image" or file_type == "video" or file_type == "audio":
+            file_action = "rb"
 
+            while True:
+                file_send = open(f'{BASE_PATH}{file_name}', f"{file_action}")
+                content = file_send.read(self.SIZE)
+                while content:
+                    self.client.send(content)
+                    content = file_send.read(self.SIZE)
+                break
+            try:
+                self.client.send("1")
+            except TypeError:
+                self.client.send("1".encode(self.FORMAT))
+            
+            file_send.close()
+        else: 
+            file_action = 'r'
+        
         try:
             file_send = open(f'{BASE_PATH}{file_name}', f"{file_action}")
             data = file_send.read()
