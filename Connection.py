@@ -34,7 +34,7 @@ class StablishConnection():
         file_type = filetype.guess(f'{BASE_PATH}{file_name}')
         file_action='r'
 
-        #TODO: Agregar los file actions segun el tipo de archivo que se esta recibiendo
+        #TODO: Agregar los file_new actions segun el tipo de archivo que se esta recibiendo
         if file_type == 'image':
             file_action = "r"
         elif file_type == "video":
@@ -43,14 +43,15 @@ class StablishConnection():
         try:
             file_send = open(f'{BASE_PATH}{file_name}', f"{file_action}")
             data = file_send.read()
-            self.client.send(f"{file_name}".encode(self.FORMAT)) 
-            msg = self.client.receive(self.SIZE).decode(self.FORMAT)
-            print(f'{SERVER} :{msg}')
-            file.close()
+            directory = f'{BASE_PATH}{file_name}'
+            self.client.send(f"{directory}".encode(self.FORMAT)) 
+            msg = self.client.recv(self.SIZE).decode(self.FORMAT)
+
+            print(f'{msg}')
+            file_send.close()
         except socket.error as err: 
             print("Error", err)
-        except:
-            print("Error de archivo")
+        
 
     def close_connection(self): 
         try: 
@@ -77,15 +78,20 @@ class StablishConnection():
 
             filename = conn.recv(self.SIZE).decode(self.FORMAT)  # Se recibe el archivo (vacio)
             print("[RECV] Archivo recivido.")
-            file = open(filename, 'r')  # Abrimos el archivo (vacio)
+            file_old = open(filename, "r")
+            filename = filename.split(".")
+            filename[0] = filename[0]+"_recv."
+            filename = filename[0]+filename[1]
+            file_new = open(filename, 'w')  # Abrimos el archivo (vacio)
             conn.send("Archivo recivido.".encode(self.FORMAT))
 
             data = conn.recv(self.SIZE).decode(self.FORMAT)  # Se recibe la data (texto)
             print(f"[RECV] Archivo de datos recibidos")
-            file.write(data)  # Se escribe la data en el el archivo
-            conn.send("Archivo de datos recivido".encode(FORMAT))  # Se almacena
+            file_new.write(file_old.read())  # Se escribe la data en el el archivo
+            conn.send("Archivo de datos recivido".encode(self.FORMAT))  # Se almacena
 
-            file.close()  # Cerramos el archivo
+            file_new.close()
+            file_old.close()  # Cerramos el archivo
             conn.close()  # Cerramos la conexion con el cliente
             print(f"[DESCONECTADO] {addr} desconectado")
 

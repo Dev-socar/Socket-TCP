@@ -8,13 +8,12 @@ def main():
     except:
         print("Error al tratar de optener los datos")
 
-    try: 
-        cli = StablishConnection(8080, tipo)
-        cli.get_client()
-        cli.send_file(file_name)
-        cli.close_connection()
-    except:
-        print("Ocurrio un error al mandar tu archivo")
+    
+    cli = StablishConnection(8080, tipo)
+    cli.get_client()
+    cli.send_file(file_name)
+    cli.close_connection()
+    
 
 if __name__ == "__main__":
     main()

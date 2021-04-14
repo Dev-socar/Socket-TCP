@@ -8,12 +8,10 @@ def main():
         tipo = input("Ingresa el tipo de servidor que deseas activar (tcp/udp): \n>:")
     except:
         print("Error al ingresar el tipo de servidor")
+        
+    serv = StablishConnection(8080, tipo)
+    serv.create_server_connection()
     
-    try:
-        serv = StablishConnection(8080, tipo)
-        serv.create_server_connection()
-    except:
-        print("Lo sentimos, ocurrio un fallo en el servidor")
 
 
 if __name__ == "__main__":
